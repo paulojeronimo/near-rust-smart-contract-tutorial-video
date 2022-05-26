@@ -5,10 +5,10 @@ cd $(dirname $0)
 media_dir=media
 ssr_dir=${media_dir}/simplescreenrecord
 build_dir=build
-trimmed_dir=$build_dir/trimmed
+trim_dir=$build_dir/trim
 
 _trim() {
-  mkdir -p $trimmed_dir
+  mkdir -p $trim_dir
 
   local file
   local ss
@@ -16,9 +16,11 @@ _trim() {
   for file in $ssr_dir/*.mkv
   do
     file=${file##*/}
-    ss=$(yq ".trim.\"$file\".ss" config.yaml)
-    to=$(yq ".trim.\"$file\".to" config.yaml)
-    ffmpeg -y -i $ssr_dir/$file -ss $ss -to $to -c:v copy $trimmed_dir/$file &> $trimmed_dir/$file.log
+    ss_to=($(yq ".trim.\"$file\"" config.yaml))
+    ffmpeg -y -i $ssr_dir/$file \
+      -ss ${ss_to[0]} \
+      -to ${ss_to[1]} \
+      -c:v copy $trim_dir/$file &> $trim_dir/$file.log
   done
 }
 
