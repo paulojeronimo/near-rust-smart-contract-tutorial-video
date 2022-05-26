@@ -32,6 +32,20 @@ _media-tar-gz() {
   tar -hcvf - media/ | gzip - > media.tar.gz
 }
 
+_html() {
+  # https://gist.github.com/paulojeronimo/95977442a96c0c6571064d10c997d3f2
+  docker-asciidoctor-builder
+}
+
+_gh-pages() {
+  local html=$build_dir/index.html
+  if ! [ -f $html ] || [ README.adoc -nt $html ]
+  then
+    _html
+  fi
+  docker-asciidoctor-builder gh-pages
+}
+
 op=${1:-all}
 if ! type "_$op" &> /dev/null
 then
