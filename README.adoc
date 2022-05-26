@@ -14,9 +14,25 @@ Paulo Jerônimo, {localdate}
 
 === Use Ubuntu 22.04!
 
-=== Install ffmpeg
+I did not have time to test this project in other environments yet.
+So, please, use Ubuntu 22.04 to test this project.
 
-=== Install yq
+If you have any problems running it, please open a GitHub issue and I
+will try to help you!
+
+=== Install the required softwares
+
+==== ffmpeg
+
+----
+$ sudo apt install -y ffmpeg
+
+$ ffmpeg -version | head -2
+ffmpeg version 4.4.1-3ubuntu5 Copyright (c) 2000-2021 the FFmpeg developers
+built with gcc 11 (Ubuntu 11.2.0-18ubuntu1)
+----
+
+==== yq
 
 ----
 $ sudo snap install yq
@@ -25,7 +41,14 @@ $ yq --version
 yq (https://github.com/mikefarah/yq/) version 4.24.2
 ----
 
-Test it:
+=== Clone this repo and change your current directory to it
+
+----
+$ repo=https://github.com/paulojeronimo/near-rust-smart-contract-tutorial-video
+$ git clone $repo && cd $(basename $repo)
+----
+
+Test your `yq` installation:
 
 ----
 $ yq config.yaml
@@ -38,16 +61,23 @@ to: '00:03:19'
 References::
 * https://mikefarah.gitbook.io/yq/
 
-=== Unpack the file media.tar.gz
+=== Download and extract the file media.tar.gz
+
+Download the file `media.tar.gz` from this shared drive:
+https://drive.google.com/drive/folders/1oeBzXnx_pv82RmlqywVq42Gaol0PlWwe
+
+Move it to your cloned git repo directory and extract it:
 
 ----
 $ tar xvfz media.tar.gz
 ----
 
+The created directory structure should be this:
+
 ----
-$ tree -l media
+$ tree media
 media
-`-- simplescreenrecord -> /home/pj/Videos/near-rust-smart-contract-tutorial/
+`-- simplescreenrecord
     |-- 01.1.mkv
     |-- 02.2.mkv
     |-- 03.3.mkv
@@ -71,5 +101,5 @@ $ ./build.sh
 == Generating the file media.tar.gz
 
 ----
-$ tar -hcvf - media/ | gzip - > media.tar.gz
+$ ./build.sh media-tar-gz
 ----
