@@ -98,8 +98,16 @@ media
 $ ./build.sh
 ----
 
-== Generating the file media.tar.gz
+== Author's functions
+
+=== Generating the file media.tar.gz
 
 ----
 $ ./build.sh media-tar-gz
+----
+
+=== Generating an HTML from README.adoc and publishing it in GitHub Pages
+
+----
+$ ./build.sh gh-pages
 ----
