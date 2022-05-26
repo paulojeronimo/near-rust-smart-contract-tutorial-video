@@ -2,21 +2,35 @@
 set -eou pipefail
 cd $(dirname $0)
 
-input_dir=media/simplescreenrecord
+media_dir=media
+ssr_dir=${media_dir}/simplescreenrecord
 build_dir=build
 trimmed_dir=$build_dir/trimmed
 
 _trim() {
   mkdir -p $trimmed_dir
-  file=01.1.mkv
-  ffmpeg -y -i $input_dir/$file -ss 00:00:02 -to 00:03:19 -c:v copy $trimmed_dir/$file &> $trimmed_dir/$file.log
+
+  local file
+  local ss
+  local to
+  for file in $ssr_dir/*.mkv
+  do
+    file=${file##*/}
+    ss=$(yq ".trim.\"$file\".ss" config.yaml)
+    to=$(yq ".trim.\"$file\".to" config.yaml)
+    ffmpeg -y -i $ssr_dir/$file -ss $ss -to $to -c:v copy $trimmed_dir/$file &> $trimmed_dir/$file.log
+  done
+}
+
+_all() {
+  _trim
 }
 
 _media-tar-gz() {
   tar -hcvf - media/ | gzip - > media.tar.gz
 }
 
-op=${1:-trim}
+op=${1:-all}
 if ! type "_$op" &> /dev/null
 then
   echo "Operation '_$op' not found! Aborting ..."
