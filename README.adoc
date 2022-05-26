@@ -1,0 +1,43 @@
+= Script to generate the video near-rust-smart-contract-tutorial.mkv
+
+== Prerequisites
+
+Install `ffmpeg` on Ubuntu 22.04.
+
+Unpack the file `media.tar.gz`
+
+----
+$ tar xvfz media.tar.gz
+----
+
+See the contents:
+
+----
+$ tree -l media
+media
+`-- simplescreenrecord -> /home/pj/Videos/near-rust-smart-contract-tutorial/
+    |-- 01.1.mkv
+    |-- 02.2.mkv
+    |-- 03.3.mkv
+    |-- 04.4-6.mkv
+    |-- 05.7-10.mkv
+    |-- 06.15.mkv
+    |-- 07.mkv
+    |-- 08.mkv
+    |-- 09.mkv
+    `-- 10.12-14.mkv
+
+1 directory, 10 files
+----
+
+== Run
+
+----
+$ ./build.sh
+----
+
+== Generating the file media.tar.gz
+
+----
+$ tar -hcvf - media/ | gzip - > media.tar.gz
+----
